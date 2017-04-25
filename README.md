@@ -10,8 +10,4 @@ node 开发微信公众号
         npm install -g localtunnel
         (lt --port number)
 
-    ngrok
-
-    tunnel.mobi
-
-    花生壳
+    ngrok / tunnel.mobi / 花生壳
