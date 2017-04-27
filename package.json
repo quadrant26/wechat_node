@@ -1,0 +1,23 @@
+{
+  "name": "wechat_node",
+  "version": "1.0.0",
+  "description": "node 开发微信公众号",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/quadrant26/wechat_node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/quadrant26/wechat_node/issues"
+  },
+  "homepage": "https://github.com/quadrant26/wechat_node#readme",
+  "devDependencies": {
+    "koa": "^1.2.0",
+    "sha1": "^1.1.1"
+  }
+}
