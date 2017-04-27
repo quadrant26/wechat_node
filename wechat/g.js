@@ -5,7 +5,7 @@ var Promise = require('bluebird')
 var request = Promise.promisify(require('request'))
 
 var prefix = "https://api.weixin.qq.com/cgi-bin/";
-var api  {
+var api = {
     access_token : prefix+"token?grant_type=client_credential"
 }
 function Wechat(opts) {
@@ -15,26 +15,27 @@ function Wechat(opts) {
     this.getAccessToken = opts.getAccessToken
     this.saveAccessToken = opts.saveAccessToken
 
-    this.getAccessToken()
-    .then(function (data){
-        try{
-            data = JSON.parse(data)
-        }catch(e){
-            return that.updateAccessToken()
-        }
+    return this.getAccessToken()
+        .then(function (data){
+            try{
+                data = JSON.parse(data)
+            }catch(e){
+                return that.updateAccessToken()
+            }
 
-        if(that.isValidAccessToken(data)){
-            Promise.resolve(data)
-        }else{
-            return that.updateAccessToken()
-        }
-    })
-    .then(function (data) {
-        that.access_token = data.access_token
-        that.expires_in = data.expires_in
+            if(that.isValidAccessToken(data)){
+                Promise.resolve(data)
+            }else{
+                return that.updateAccessToken()
+            }
+        })
+        .then(function (data) {
+            that.access_token = data.access_token
+            that.expires_in = data.expires_in
 
-        this.saveAccessToken(data)
-    })
+            that.saveAccessToken(data)
+            //return Promise.resolve(data)
+        })
 }
 
 Wechat.prototype.isValidAccessToken = function (data){
@@ -59,7 +60,8 @@ Wechat.prototype.updateAccessToken = function (){
 
     return new Promise(function (resolve, reject){
         request({url : url, json : true}).then(function (response){
-            var data = response[1]
+
+            var data = response.body
             var now = (new Date().getTime())
             var expires_in = now + (data.expires_in - 20) * 1000
 
@@ -73,8 +75,8 @@ Wechat.prototype.updateAccessToken = function (){
 
 
 module.exports = function (opts){
-    var wechat = new wechat(opts)
-    
+    var wechat = new Wechat(opts)
+
     return function *(next){
         console.log(this.query);
 
