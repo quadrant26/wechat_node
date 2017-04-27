@@ -17,7 +17,10 @@
   },
   "homepage": "https://github.com/quadrant26/wechat_node#readme",
   "devDependencies": {
+    "bluebird": "^3.5.0",
     "koa": "^1.2.0",
+    "path": "^0.12.7",
+    "request": "^2.81.0",
     "sha1": "^1.1.1"
   }
 }
