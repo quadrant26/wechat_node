@@ -1,34 +1,28 @@
 "use strict"
 
 var Koa = require("koa");
-var sha1 = require("sha1");
+var path = require("path")
+var util = require("./lib/util")
+var wechat = require("./wechat/g")
+var wechat_file = path.join(__dirname, './config/wechat.txt')
 var config = {
     wechat: {
         appId : "wx83ab7dc18148dc9b",
         appSecret : "4594ac21d2c47e5721f61db9b6196c7e",
-        token : "gh_2f6adca29cad"
+        token : "supernova",
+        getAccessToken : function (data){
+            return util.readFileAsync(wechat_file)
+        },
+        setAccessToken : function (data){
+            var data = JSON.stringify(data);
+            return util.writeFileAsync(wechat_file, data)
+        }
     }
 }
 
 var app  = new Koa();
 
-app.use(function *(next){
-    console.log(this.query);
+app.use(wechat(config.wechat));
 
-    var token = config.wechat.token;
-    var signature = this.query.signature;
-    var nonce = this.query.nonce;
-    var timstamp = this.query.timestamp;
-    var ecostr = this.query.ecostr;
-    var str = [token, timstamp, nonce].sort().join('');
-    var sha = sha1(str);
-
-    if(sha === signature){
-        this.body == ecostr + ''
-    }else{
-        this.body = 'wrong';
-    }
-})
-
-app.listen(3100)
-console.log('Listening:3100');
+app.listen(8989)
+console.log('Listening:8989');
